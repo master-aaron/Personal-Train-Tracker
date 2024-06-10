@@ -65,3 +65,7 @@ li {
 .button-container button:hover {
 	background-color: #45a049;
 }
+
+.direction-button:not(.selected) {
+    background-color: #ddd; /* Grey out the button */
+}

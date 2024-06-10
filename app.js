@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						const stopName = await fetchStopNameFromId(stopId);
 						const status = vehicle.attributes.current_status;
 						return { stopId, stopName, status };
-					}),
+					})
 				);
 				updateStopsList(vehicleLocations);
 				message.textContent = "Displaying all train locations.";
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			const li = document.createElement("li");
 			li.textContent = stop.name;
 			const vehicleAtStop = vehicleLocations.find(
-				(location) => location.stopName === stop.name,
+				(location) => location.stopName === stop.name
 			);
 			if (vehicleAtStop) {
 				li.classList.add("current-location");
@@ -88,6 +88,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	// Function to handle direction button click
 	function handleDirectionButtonClick(event) {
+		directionButtons.forEach((button) =>
+			button.classList.remove("selected")
+		);
+		event.target.classList.add("selected");
 		direction = parseInt(event.target.dataset.direction);
 		fetchStops().then(() => {
 			fetchTrainLocations();
