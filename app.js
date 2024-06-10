@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const directionButtons = document.querySelectorAll("#directionButton");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
-	let direction = 0; // Default direction is Inbound
+	let direction = 1; // Default direction is Outbound
 
 	async function fetchStops() {
 		const url = `https://api-v3.mbta.com/stops?filter[route]=Green-E&filter[direction_id]=1&api_key=${apiKey}`;
