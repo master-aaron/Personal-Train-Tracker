@@ -106,6 +106,6 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Initial fetch of stops and set interval to fetch train location every 6 seconds
 	fetchStops().then(() => {
 		fetchTrainLocations();
-		setInterval(fetchTrainLocations, 6000);
+		setInterval(fetchTrainLocations, 1000);
 	});
 });
