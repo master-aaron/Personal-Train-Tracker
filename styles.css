@@ -34,11 +34,13 @@ ul {
 li {
 	padding: 5px;
 	font-size: 16px;
+	transition: 1s, background-color 1s;
 }
 
 .current-location {
 	color: green;
-	font-weight: bold;
+	font-weight: bold;  
+	background-color: #e0ffe0; /* Add a light green background color for the current location */
 }
 
 /* Button styles */
