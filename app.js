@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	const lineSelect = document.getElementById("lineSelect");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
-	let direction = 1; // Default direction is Inbound
+	let direction = parseInt(getCookie("direction") || "1"); // Default direction is Inbound
 	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
 
 	const lineColors = {
@@ -150,6 +150,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		);
 		event.target.classList.add("selected");
 		direction = parseInt(event.target.dataset.direction);
+		setCookie("direction", direction, 7);
 		fetchStops().then(() => {
 			fetchTrainLocations();
 		});
@@ -183,10 +184,21 @@ document.addEventListener("DOMContentLoaded", function () {
 		button.addEventListener("click", handleDirectionButtonClick);
 	});
 
+	function setDirectionButton() {
+		directionButtons.forEach((button) =>
+			button.classList.remove("selected")
+		);
+		directionButtons.forEach((button) => {
+			if (parseInt(button.dataset.direction) === direction)
+				button.classList.add("selected");
+		});
+	}
+
 	lineSelect.addEventListener("change", handleLineSelectChange);
 
 	fetchSubwayLines().then(() => {
 		fetchStops().then(() => {
+			setDirectionButton();
 			fetchTrainLocations();
 			setInterval(fetchTrainLocations, 1000);
 		});
