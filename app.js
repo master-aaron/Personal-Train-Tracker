@@ -18,6 +18,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		"Green-E": { primary: "#008000", lighter: "#dcffdc" },
 	};
 
+	const locationStatus = {
+		IN_TRANSIT_TO: "In transit to",
+		STOPPED_AT: "Stopped at",
+		INCOMING_AT: "Incoming at",
+	};
+
 	async function fetchSubwayLines() {
 		const url = `https://api-v3.mbta.com/routes?filter[type]=0,1&api_key=${apiKey}`;
 		try {
@@ -29,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				option.value = line.id;
 				option.textContent = line.attributes.long_name;
 				if (line.id === "Green-E") {
-					option.selected = true; // Set default selected option
+					option.selected = true;
 				}
 				lineSelect.appendChild(option);
 			});
@@ -109,7 +115,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				li.classList.add("current-location");
 				const status = vehicleAtStop.status;
 				const statusSpan = document.createElement("span");
-				statusSpan.textContent = `   (${status})`;
+				statusSpan.textContent = `   (${locationStatus[status]})`;
 				li.appendChild(statusSpan);
 			}
 			stopsList.appendChild(li);
