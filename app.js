@@ -29,7 +29,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
-			const lines = data.data;
+			const allLines = data.data;
+			const lines = allLines.filter((line) => line.id != "Mattapan");
 			lines.forEach((line) => {
 				const option = document.createElement("option");
 				option.value = line.id;
