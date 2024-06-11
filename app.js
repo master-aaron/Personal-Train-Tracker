@@ -41,7 +41,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStops() {
-		const url = `https://api-v3.mbta.com/stops?filter[route]=${selectedLine}&filter[direction_id]=${direction}&api_key=${apiKey}`;
+		const url = `https://api-v3.mbta.com/stops?filter[route]=${selectedLine}&filter[direction_id]=1&api_key=${apiKey}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
