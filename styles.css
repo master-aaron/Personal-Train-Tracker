@@ -1,72 +1,72 @@
 body {
-	font-family: Arial, sans-serif;
-	background-color: #f4f4f4;
-	margin: 20px 0; /* Add space between the top and bottom of the page */
-	padding: 0;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	min-height: 100vh;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    margin: 20px 0; /* Add space between the top and bottom of the page */
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .container {
-	text-align: center;
-	background: white;
-	padding: 20px;
-	border-radius: 8px;
-	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-	width: 90%;
-	max-width: 400px;
-	margin: 20px 0; /* Add space between the container and the top and bottom of the page */
+    text-align: center;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 400px;
+    margin: 20px 0; /* Add space between the container and the top and bottom of the page */
 }
 
 h1 {
-	color: #333;
-	margin-top: 0;
+    color: #333;
+    margin-top: 0; /* Remove default margin on top */
 }
 
 ul {
-	list-style-type: none;
-	padding: 0;
-	margin-top: 0;
+    list-style-type: none;
+    padding: 0;
+    margin-top: 0; /* Remove default margin on top */
 }
 
 li {
-	padding: 5px;
-	font-size: 16px;
-	transition: 1s, background-color 1s;
+    padding: 5px;
+    font-size: 16px;
+    transition: color 0.5s, background-color 0.5s; /* Add transition for color and background-color */
 }
 
 .current-location {
-	color: green;
-	font-weight: bold;  
-	background-color: #e0ffe0; /* Add a light green background color for the current location */
+    color: green;
+    font-weight: bold;
+    background-color: #e0ffe0; /* Add a light green background color for the current location */
 }
 
 /* Button styles */
 .button-container {
-	margin-bottom: 20px;
-	display: flex;
-	justify-content: space-around;
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .button-container button {
-	background-color: #4caf50;
-	border: none;
-	color: white;
-	padding: 10px 20px;
-	text-align: center;
-	text-decoration: none;
-	display: inline-block;
-	font-size: 16px;
-	cursor: pointer;
-	border-radius: 8px;
-	transition-duration: 0.4s;
+    background-color: #4CAF50;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition-duration: 0.4s;
 	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .button-container button:hover {
-	background-color: #45a049;
+    background-color: #45a049;
 }
 
 .direction-button:not(.selected) {

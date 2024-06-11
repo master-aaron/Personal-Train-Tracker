@@ -1,34 +1,22 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Green Line Train Tracker</title>
-		<link rel="stylesheet" href="styles.css" />
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Personal Train Tracker</title>
+		<link rel="stylesheet" href="styles.css">
 	</head>
 	<body>
 		<div class="container">
-			<h1>Green Line E Train Tracker</h1>
+			<h1>MBTA Green Line E Train Tracker</h1>
 			<div class="button-container">
-				<button
-					id="directionButton"
-					data-direction="0"
-					class="direction-button"
-				>
-					Inbound &#9650;
-				</button>
-				<button
-					id="directionButton"
-					data-direction="1"
-					class="direction-button selected"
-				>
-					Outbound &#9660;
-				</button>
+				<button id="directionButton" data-direction="0" class="direction-button">Inbound ↑</button>
+				<button id="directionButton" data-direction="1" class="direction-button selected">Outbound ↓</button>
 			</div>
-			<hr/>
+			<hr />
 			<ul id="stopsList"></ul>
 			<p id="message"></p>
 		</div>
-		<script src="app.js"></script>
+    	<script src="app.js"></script>
 	</body>
 </html>

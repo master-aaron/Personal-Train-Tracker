@@ -86,7 +86,6 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Function to handle direction button click
 	function handleDirectionButtonClick(event) {
 		directionButtons.forEach((button) =>
 			button.classList.remove("selected")
@@ -98,12 +97,10 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	// Add event listener to direction buttons
 	directionButtons.forEach((button) => {
 		button.addEventListener("click", handleDirectionButtonClick);
 	});
 
-	// Initial fetch of stops and set interval to fetch train location every 6 seconds
 	fetchStops().then(() => {
 		fetchTrainLocations();
 		setInterval(fetchTrainLocations, 1000);
