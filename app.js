@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
 	let direction = 1; // Default direction is Outbound
 	let selectedLine = "Green-E"; // Default line
 
+	const lineColors = {
+		Red: { primary: "#FF0000", lighter: "#ffdfdf" },
+		Blue: { primary: "#0000FF", lighter: "#CCCCFF" },
+		Orange: { primary: "#d38900", lighter: "#FFECB3" },
+		"Green-B": { primary: "#008000", lighter: "#dcffdc" },
+		"Green-C": { primary: "#008000", lighter: "#dcffdc" },
+		"Green-D": { primary: "#008000", lighter: "#dcffdc" },
+		"Green-E": { primary: "#008000", lighter: "#dcffdc" },
+	};
+
 	async function fetchSubwayLines() {
 		const url = `https://api-v3.mbta.com/routes?filter[type]=0,1&api_key=${apiKey}`;
 		try {
@@ -119,6 +129,18 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleLineSelectChange() {
 		selectedLine = lineSelect.value;
+		const color = lineColors[selectedLine] || {
+			primary: "#000000",
+			lighter: "#f0f0f0",
+		};
+		document.documentElement.style.setProperty(
+			"--line-color",
+			color.primary
+		);
+		document.documentElement.style.setProperty(
+			"--line-color-lighter",
+			color.lighter
+		);
 		fetchStops().then(() => {
 			fetchTrainLocations();
 		});

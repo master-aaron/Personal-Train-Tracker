@@ -1,7 +1,12 @@
+:root {
+    --line-color: #008000; /* Default to Green Line E */
+    --line-color-lighter: #CCFFCC; /* Default to lighter Green Line E */
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f4;
-    margin: 20px 0; /* Add space between the top and bottom of the page */
+    margin: 20px 0;
     padding: 0;
     display: flex;
     justify-content: center;
@@ -17,33 +22,32 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     width: 90%;
     max-width: 400px;
-    margin: 20px 0; /* Add space between the container and the top and bottom of the page */
+    margin: 20px 0;
 }
 
 h1 {
     color: #333;
-    margin-top: 0; /* Remove default margin on top */
+    margin-top: 0; 
 }
 
 ul {
     list-style-type: none;
     padding: 0;
-    margin-top: 0; /* Remove default margin on top */
+    margin-top: 0;
 }
 
 li {
     padding: 5px;
     font-size: 16px;
-    /* display: flex;
+    display: flex;
     justify-content: space-between;
-    align-items: center; */
-    transition: color 0.5s, background-color 0.5s; /* Add transition for color and background-color */
+    align-items: center;
 }
 
 .current-location {
-    color: green;
+    color: var(--line-color);
     font-weight: bold;
-    background-color: #e0ffe0; /* Add a light green background color for the current location */
+    background-color: var(--line-color-lighter);
 }
 
 /* Button styles */
@@ -54,7 +58,7 @@ li {
 }
 
 .button-container button {
-    background-color: #4CAF50;
+    background-color: var(--line-color);
     border: none;
     color: white;
     padding: 10px 20px;
@@ -65,18 +69,17 @@ li {
     cursor: pointer;
     border-radius: 8px;
     transition-duration: 0.4s;
-	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .button-container button:hover {
-    background-color: #45a049;
+    background-color: var(--line-color);
 }
 
 .direction-button:not(.selected) {
-    background-color: #ddd; /* Grey out the button */
+    background-color: #ddd;
 }
 
-/* Add this if you want to style the dropdown */
 .line-container {
     margin-bottom: 20px;
 }
