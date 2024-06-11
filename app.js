@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
 	const stopsList = document.getElementById("stopsList");
 	const message = document.getElementById("message");
-	const directionButtons = document.querySelectorAll("#directionButton");
+	const directionButtons = document.querySelectorAll(".direction-button");
 	const lineSelect = document.getElementById("lineSelect");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = 1; // Default direction is Inbound
-	let selectedLine = "Green-E"; // Default line
+	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
 
 	const lineColors = {
 		Red: { primary: "#FF0000", lighter: "#ffdfdf" },
@@ -24,6 +24,26 @@ document.addEventListener("DOMContentLoaded", function () {
 		INCOMING_AT: "Incoming at",
 	};
 
+	function setCookie(name, value, days) {
+		const date = new Date();
+		date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
+		const expires = "expires=" + date.toUTCString();
+		document.cookie = name + "=" + value + ";" + expires + ";path=/";
+	}
+
+	function getCookie(name) {
+		const cname = name + "=";
+		const decodedCookie = decodeURIComponent(document.cookie);
+		const ca = decodedCookie.split(";");
+		for (let i = 0; i < ca.length; i++) {
+			let c = ca[i].trim();
+			if (c.indexOf(cname) == 0) {
+				return c.substring(cname.length, c.length);
+			}
+		}
+		return "";
+	}
+
 	async function fetchSubwayLines() {
 		const url = `https://api-v3.mbta.com/routes?filter[type]=0,1&api_key=${apiKey}`;
 		try {
@@ -35,11 +55,12 @@ document.addEventListener("DOMContentLoaded", function () {
 				const option = document.createElement("option");
 				option.value = line.id;
 				option.textContent = line.attributes.long_name;
-				if (line.id === "Green-E") {
+				if (line.id === selectedLine) {
 					option.selected = true;
 				}
 				lineSelect.appendChild(option);
 			});
+			updateLineColors(selectedLine);
 		} catch (error) {
 			message.textContent = "Error fetching subway lines.";
 			message.style.color = "red";
@@ -136,7 +157,15 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleLineSelectChange() {
 		selectedLine = lineSelect.value;
-		const color = lineColors[selectedLine] || {
+		setCookie("selectedLine", selectedLine, 7); // Save selected line in a cookie for 7 days
+		updateLineColors(selectedLine);
+		fetchStops().then(() => {
+			fetchTrainLocations();
+		});
+	}
+
+	function updateLineColors(line) {
+		const color = lineColors[line] || {
 			primary: "#000000",
 			lighter: "#f0f0f0",
 		};
@@ -148,9 +177,6 @@ document.addEventListener("DOMContentLoaded", function () {
 			"--line-color-lighter",
 			color.lighter
 		);
-		fetchStops().then(() => {
-			fetchTrainLocations();
-		});
 	}
 
 	directionButtons.forEach((button) => {
