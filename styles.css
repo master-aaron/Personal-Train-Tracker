@@ -34,6 +34,9 @@ ul {
 li {
     padding: 5px;
     font-size: 16px;
+    /* display: flex;
+    justify-content: space-between;
+    align-items: center; */
     transition: color 0.5s, background-color 0.5s; /* Add transition for color and background-color */
 }
 
@@ -71,4 +74,14 @@ li {
 
 .direction-button:not(.selected) {
     background-color: #ddd; /* Grey out the button */
+}
+
+/* Add this if you want to style the dropdown */
+.line-container {
+    margin-bottom: 20px;
+}
+
+#lineSelect {
+    padding: 10px;
+    font-size: 16px;
 }

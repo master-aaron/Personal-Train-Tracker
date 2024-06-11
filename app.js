@@ -2,13 +2,36 @@ document.addEventListener("DOMContentLoaded", function () {
 	const stopsList = document.getElementById("stopsList");
 	const message = document.getElementById("message");
 	const directionButtons = document.querySelectorAll("#directionButton");
+	const lineSelect = document.getElementById("lineSelect");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = 1; // Default direction is Outbound
+	let selectedLine = "Green-E"; // Default line
+
+	async function fetchSubwayLines() {
+		const url = `https://api-v3.mbta.com/routes?filter[type]=0,1&api_key=${apiKey}`;
+		try {
+			const response = await fetch(url);
+			const data = await response.json();
+			const lines = data.data;
+			lines.forEach((line) => {
+				const option = document.createElement("option");
+				option.value = line.id;
+				option.textContent = line.attributes.long_name;
+				if (line.id === "Green-E") {
+					option.selected = true; // Set default selected option
+				}
+				lineSelect.appendChild(option);
+			});
+		} catch (error) {
+			message.textContent = "Error fetching subway lines.";
+			message.style.color = "red";
+			console.error("Error fetching subway lines:", error);
+		}
+	}
 
 	async function fetchStops() {
-		const url = `https://api-v3.mbta.com/stops?filter[route]=Green-E&filter[direction_id]=1&api_key=${apiKey}`;
-
+		const url = `https://api-v3.mbta.com/stops?filter[route]=${selectedLine}&filter[direction_id]=${direction}&api_key=${apiKey}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -26,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	async function fetchStopNameFromId(stopId) {
 		const url = `https://api-v3.mbta.com/stops/${stopId}?api_key=${apiKey}`;
-
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -37,13 +59,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchTrainLocations() {
-		const url = `https://api-v3.mbta.com/vehicles?filter[route]=Green-E&filter[direction_id]=${direction}&api_key=${apiKey}`;
-
+		const url = `https://api-v3.mbta.com/vehicles?filter[route]=${selectedLine}&filter[direction_id]=${direction}&api_key=${apiKey}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
 			const vehicles = data.data;
-
 			if (vehicles.length > 0) {
 				const vehicleLocations = await Promise.all(
 					vehicles.map(async (vehicle) => {
@@ -97,12 +117,23 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	function handleLineSelectChange() {
+		selectedLine = lineSelect.value;
+		fetchStops().then(() => {
+			fetchTrainLocations();
+		});
+	}
+
 	directionButtons.forEach((button) => {
 		button.addEventListener("click", handleDirectionButtonClick);
 	});
 
-	fetchStops().then(() => {
-		fetchTrainLocations();
-		setInterval(fetchTrainLocations, 1000);
+	lineSelect.addEventListener("change", handleLineSelectChange);
+
+	fetchSubwayLines().then(() => {
+		fetchStops().then(() => {
+			fetchTrainLocations();
+			setInterval(fetchTrainLocations, 1000);
+		});
 	});
 });

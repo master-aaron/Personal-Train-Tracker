@@ -1,22 +1,27 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<title>Personal Train Tracker</title>
-		<link rel="stylesheet" href="styles.css">
-	</head>
-	<body>
-		<div class="container">
-			<h1>MBTA Green Line E Train Tracker</h1>
-			<div class="button-container">
-				<button id="directionButton" data-direction="0" class="direction-button">Inbound ↑</button>
-				<button id="directionButton" data-direction="1" class="direction-button selected">Outbound ↓</button>
-			</div>
-			<hr />
-			<ul id="stopsList"></ul>
-			<p id="message"></p>
-		</div>
-    	<script src="app.js"></script>
-	</body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Train Tracker</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>MBTA Subway Train Tracker</h1>
+        <div class="line-container">
+            <label for="lineSelect">Select Line:</label>
+            <select id="lineSelect">
+            </select>
+        </div>
+        <div class="button-container">
+            <button id="directionButton" data-direction="0" class="direction-button">Inbound ↑</button>
+            <button id="directionButton" data-direction="1" class="direction-button selected">Outbound ↓</button>
+        </div>
+        <hr />
+        <ul id="stopsList"></ul>
+        <p id="message"></p>
+    </div>
+    <script src="app.js"></script>
+</body>
 </html>
