@@ -5,13 +5,13 @@ document.addEventListener("DOMContentLoaded", function () {
 	const lineSelect = document.getElementById("lineSelect");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
-	let direction = 1; // Default direction is Outbound
+	let direction = 1; // Default direction is Inbound
 	let selectedLine = "Green-E"; // Default line
 
 	const lineColors = {
 		Red: { primary: "#FF0000", lighter: "#ffdfdf" },
 		Blue: { primary: "#0000FF", lighter: "#CCCCFF" },
-		Orange: { primary: "#d38900", lighter: "#FFECB3" },
+		Orange: { primary: "#ee9b00", lighter: "#fff6d9" },
 		"Green-B": { primary: "#008000", lighter: "#dcffdc" },
 		"Green-C": { primary: "#008000", lighter: "#dcffdc" },
 		"Green-D": { primary: "#008000", lighter: "#dcffdc" },
