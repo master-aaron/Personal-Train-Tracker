@@ -3,10 +3,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	const message = document.getElementById("message");
 	const directionButtons = document.querySelectorAll(".direction-button");
 	const lineSelect = document.getElementById("lineSelect");
+	const busCheckbox = document.getElementById("busCheckbox");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = parseInt(getCookie("direction") || "1"); // Default direction is Inbound
 	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
+	let busChecked = JSON.parse(getCookie("busChecked")) || false;
 
 	const lineColors = {
 		Red: { primary: "#FF0000", lighter: "#ffdfdf" },
@@ -45,16 +47,23 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchSubwayLines() {
-		const url = `https://api-v3.mbta.com/routes?filter[type]=0,1&api_key=${apiKey}`;
+		const url = `https://api-v3.mbta.com/routes?filter[type]=${
+			busChecked ? "0,1,3" : "0,1"
+		}&api_key=${apiKey}`;
+
+		selectedLine = getCookie("selectedLine");
+
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
 			const allLines = data.data;
 			const lines = allLines.filter((line) => line.id != "Mattapan");
+
+			lineSelect.innerHTML = "";
+
 			lines.forEach((line) => {
 				const option = document.createElement("option");
-				option.value = line.id;
-				option.textContent = line.attributes.long_name;
+				option.textContent = line.id;
 				if (line.id === selectedLine) {
 					option.selected = true;
 				}
@@ -158,7 +167,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleLineSelectChange() {
 		selectedLine = lineSelect.value;
-		setCookie("selectedLine", selectedLine, 7); // Save selected line in a cookie for 7 days
+
+		if (!busChecked) {
+			setCookie("selectedLine", selectedLine, 7); // Save selected line in a cookie for 7 days
+		}
+
 		updateLineColors(selectedLine);
 		fetchStops().then(() => {
 			fetchTrainLocations();
@@ -194,7 +207,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
+	function handleBusCheckboxChange(event) {
+		setCookie("busChecked", event.target.checked, 7);
+		busChecked = JSON.parse(getCookie("busChecked"));
+		fetchSubwayLines().then(() => {
+			handleLineSelectChange();
+		});
+	}
+
 	lineSelect.addEventListener("change", handleLineSelectChange);
+	busCheckbox.addEventListener("change", handleBusCheckboxChange);
 
 	fetchSubwayLines().then(() => {
 		fetchStops().then(() => {
