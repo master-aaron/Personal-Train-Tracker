@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchSubwayLines() {
+		busChecked = stringToBoolean(getCookie("busChecked"));
+
 		const url = `https://api-v3.mbta.com/routes?filter[type]=${
 			busChecked ? "0,1,3" : "0,1"
 		}&api_key=${apiKey}`;
@@ -213,7 +215,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleBusCheckboxChange(event) {
 		setCookie("busChecked", event.target.checked, 7);
-		busChecked = stringToBoolean(getCookie("busChecked"));
 		fetchSubwayLines().then(() => {
 			handleLineSelectChange();
 		});
