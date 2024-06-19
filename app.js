@@ -8,7 +8,11 @@ document.addEventListener("DOMContentLoaded", function () {
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = parseInt(getCookie("direction") || "1"); // Default direction is Inbound
 	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
-	let busChecked = JSON.parse(getCookie("busChecked")) || false;
+	let busChecked = stringToBoolean(getCookie("busChecked"));
+
+	function stringToBoolean(str) {
+		return str.toLowerCase() === "true";
+	}
 
 	const lineColors = {
 		Red: { primary: "#FF0000", lighter: "#ffdfdf" },
@@ -51,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			busChecked ? "0,1,3" : "0,1"
 		}&api_key=${apiKey}`;
 
-		selectedLine = getCookie("selectedLine");
+		selectedLine = getCookie("selectedLine") || "Green-E";
 
 		try {
 			const response = await fetch(url);
@@ -209,7 +213,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleBusCheckboxChange(event) {
 		setCookie("busChecked", event.target.checked, 7);
-		busChecked = JSON.parse(getCookie("busChecked"));
+		busChecked = stringToBoolean(getCookie("busChecked"));
 		fetchSubwayLines().then(() => {
 			handleLineSelectChange();
 		});
