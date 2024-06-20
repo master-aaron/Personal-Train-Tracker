@@ -1,33 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Personal Train Tracker</title>
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <div class="container">
-        <h1>MBTA Train Tracker</h1>
-        <div class="line-container">
-            <label for="lineSelect">Select Line:</label>
-            <select id="lineSelect">
-            </select>
-        <div class="bus-checkbox-container">
-            <label>
-                Include Bus?
-            <input id="busCheckbox" type="checkbox"/>
-            </label>
-        </div>
-        </div>
-        <div class="button-container">
-            <button id="directionButton" data-direction="0" class="direction-button">Outbound ↑</button>
-            <button id="directionButton" data-direction="1" class="direction-button selected">Inbound ↓</button>
-        </div>
-        <hr />
-        <ul id="stopsList"></ul>
-        <p id="message"></p>
-    </div>
-    <script src="app.js"></script>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Personal Train Tracker</title>
+		<link rel="stylesheet" href="styles.css" />
+	</head>
+	<body>
+		<div class="container">
+			<h1>MBTA Train Tracker</h1>
+			<div class="line-container">
+				<label for="lineSelect">Select Line:</label>
+				<select id="lineSelect"></select>
+				<div class="switch-container">
+					<span class="label" id="trainLabel">Train</span>
+					<label class="switch">
+						<input type="checkbox" id="busSlider" />
+						<span class="slider"></span>
+					</label>
+					<span class="label" id="busLabel">Bus</span>
+				</div>
+			</div>
+			<div class="button-container">
+				<button
+					id="directionButton"
+					data-direction="0"
+					class="direction-button"
+				>
+					Outbound ↑
+				</button>
+				<button
+					id="directionButton"
+					data-direction="1"
+					class="direction-button selected"
+				>
+					Inbound ↓
+				</button>
+			</div>
+			<hr />
+			<ul id="stopsList"></ul>
+			<p id="message"></p>
+		</div>
+		<script src="app.js"></script>
+	</body>
 </html>

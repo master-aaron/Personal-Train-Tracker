@@ -3,12 +3,14 @@ document.addEventListener("DOMContentLoaded", function () {
 	const message = document.getElementById("message");
 	const directionButtons = document.querySelectorAll(".direction-button");
 	const lineSelect = document.getElementById("lineSelect");
-	const busCheckbox = document.getElementById("busCheckbox");
+	const busSlider = document.getElementById("busSlider");
 	let stops = [];
 	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = parseInt(getCookie("direction") || "1"); // Default direction is Inbound
 	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
+	let selectedBus = getCookie("selectedBus") || "39";
 	let busChecked = stringToBoolean(getCookie("busChecked"));
+	let selected = busChecked ? selectedBus : selectedLine;
 
 	function stringToBoolean(str) {
 		return str.toLowerCase() === "true";
@@ -54,10 +56,12 @@ document.addEventListener("DOMContentLoaded", function () {
 		busChecked = stringToBoolean(getCookie("busChecked"));
 
 		const url = `https://api-v3.mbta.com/routes?filter[type]=${
-			busChecked ? "0,1,3" : "0,1"
+			busChecked ? "3" : "0,1"
 		}&api_key=${apiKey}`;
 
 		selectedLine = getCookie("selectedLine") || "Green-E";
+		selectedBus = getCookie("selectedBus") || "39";
+		selected = busChecked ? selectedBus : selectedLine;
 
 		try {
 			const response = await fetch(url);
@@ -70,12 +74,12 @@ document.addEventListener("DOMContentLoaded", function () {
 			lines.forEach((line) => {
 				const option = document.createElement("option");
 				option.textContent = line.id;
-				if (line.id === selectedLine) {
+				if (line.id === selected) {
 					option.selected = true;
 				}
 				lineSelect.appendChild(option);
 			});
-			updateLineColors(selectedLine);
+			updateLineColors(selected);
 		} catch (error) {
 			message.textContent = "Error fetching subway lines.";
 			message.style.color = "red";
@@ -84,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStops() {
-		const url = `https://api-v3.mbta.com/stops?filter[route]=${selectedLine}&filter[direction_id]=1&api_key=${apiKey}`;
+		const url = `https://api-v3.mbta.com/stops?filter[route]=${selected}&filter[direction_id]=1&api_key=${apiKey}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -112,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchTrainLocations() {
-		const url = `https://api-v3.mbta.com/vehicles?filter[route]=${selectedLine}&filter[direction_id]=${direction}&api_key=${apiKey}`;
+		const url = `https://api-v3.mbta.com/vehicles?filter[route]=${selected}&filter[direction_id]=${direction}&api_key=${apiKey}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -172,13 +176,13 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function handleLineSelectChange() {
-		selectedLine = lineSelect.value;
+		selected = lineSelect.value;
 
-		if (!busChecked) {
-			setCookie("selectedLine", selectedLine, 7); // Save selected line in a cookie for 7 days
-		}
+		busChecked
+			? setCookie("selectedBus", selected, 7)
+			: setCookie("selectedLine", selected, 7);
 
-		updateLineColors(selectedLine);
+		updateLineColors(selected);
 		fetchStops().then(() => {
 			fetchTrainLocations();
 		});
@@ -213,7 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 
-	function handleBusCheckboxChange(event) {
+	function handleBusSliderChange(event) {
 		setCookie("busChecked", event.target.checked, 7);
 		fetchSubwayLines().then(() => {
 			handleLineSelectChange();
@@ -221,7 +225,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	lineSelect.addEventListener("change", handleLineSelectChange);
-	busCheckbox.addEventListener("change", handleBusCheckboxChange);
+	busSlider.addEventListener("change", handleBusSliderChange);
 
 	fetchSubwayLines().then(() => {
 		fetchStops().then(() => {
