@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	let selectedBus = getCookie("selectedBus") || "39";
 	let busChecked = stringToBoolean(getCookie("busChecked"));
 	let selected = busChecked ? selectedBus : selectedLine;
+	busSlider.checked = busChecked;
 
 	function stringToBoolean(str) {
 		return str.toLowerCase() === "true";
