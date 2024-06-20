@@ -27,13 +27,14 @@ body {
 
 h1 {
     color: #333;
-    margin-top: 0; 
+    margin-top: 0;
 }
 
 ul {
     list-style-type: none;
     padding: 0;
     margin-top: 0;
+    transition: 1s ease;
 }
 
 li {
@@ -42,12 +43,20 @@ li {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: background-color 0.6s ease, color 0.6s ease;
 }
 
 .current-location {
     color: var(--line-color);
     font-weight: bold;
     background-color: var(--line-color-lighter);
+}
+
+.status-span {
+    margin-left: 10px;
+    font-weight: normal;
+    color: inherit;
+    transition: opacity 0.6s ease;
 }
 
 /* Button styles */
@@ -145,8 +154,6 @@ input:checked + .slider {
 input:checked + .slider:before {
     transform: translateX(26px);
 }
-
-
 
 #lineSelect {
     padding: 10px;

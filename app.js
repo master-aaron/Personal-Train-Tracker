@@ -146,21 +146,35 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function updateStopsList(vehicleLocations) {
-		stopsList.innerHTML = "";
 		stops.forEach((stop) => {
-			const li = document.createElement("li");
-			li.textContent = stop.name;
+			let li = document.querySelector(`#stop-${stop.id}`);
+			if (!li) {
+				li = document.createElement("li");
+				li.id = `stop-${stop.id}`;
+				li.textContent = stop.name;
+				stopsList.appendChild(li);
+			}
+
 			const vehicleAtStop = vehicleLocations.find(
 				(location) => location.stopName === stop.name
 			);
+
 			if (vehicleAtStop) {
-				li.classList.add("current-location");
-				const status = vehicleAtStop.status;
-				const statusSpan = document.createElement("span");
-				statusSpan.textContent = `   (${locationStatus[status]})`;
-				li.appendChild(statusSpan);
+				if (!li.classList.contains("current-location")) {
+					li.classList.add("current-location");
+					const status = vehicleAtStop.status;
+					const statusSpan = document.createElement("span");
+					statusSpan.textContent = `   (${locationStatus[status]})`;
+					statusSpan.classList.add("status-span");
+					li.appendChild(statusSpan);
+				}
+			} else {
+				if (li.classList.contains("current-location")) {
+					li.classList.remove("current-location");
+					const statusSpan = li.querySelector(".status-span");
+					if (statusSpan) li.removeChild(statusSpan);
+				}
 			}
-			stopsList.appendChild(li);
 		});
 	}
 
@@ -220,6 +234,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleBusSliderChange(event) {
 		setCookie("busChecked", event.target.checked, 7);
+		stopsList.innerHTML = "";
 		fetchSubwayLines().then(() => {
 			handleLineSelectChange();
 		});
