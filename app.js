@@ -192,6 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleLineSelectChange() {
 		selected = lineSelect.value;
+		stopsList.innerHTML = "";
 
 		busChecked
 			? setCookie("selectedBus", selected, 7)
