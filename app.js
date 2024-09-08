@@ -69,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			const data = await response.json();
 			const allLines = data.data;
 			const lines = allLines.filter((line) => line.id != "Mattapan");
+			lines.sort((a, b) => a.id - b.id);
 
 			lineSelect.innerHTML = "";
 
@@ -129,7 +130,7 @@ document.addEventListener("DOMContentLoaded", function () {
 						const stopName = await fetchStopNameFromId(stopId);
 						const status = vehicle.attributes.current_status;
 						return { stopId, stopName, status };
-					})
+					}),
 				);
 				updateStopsList(vehicleLocations);
 				message.textContent = "Displaying all train locations.";
@@ -156,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 
 			const vehicleAtStop = vehicleLocations.find(
-				(location) => location.stopName === stop.name
+				(location) => location.stopName === stop.name,
 			);
 
 			if (vehicleAtStop) {
@@ -180,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function handleDirectionButtonClick(event) {
 		directionButtons.forEach((button) =>
-			button.classList.remove("selected")
+			button.classList.remove("selected"),
 		);
 		event.target.classList.add("selected");
 		direction = parseInt(event.target.dataset.direction);
@@ -211,11 +212,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		};
 		document.documentElement.style.setProperty(
 			"--line-color",
-			color.primary
+			color.primary,
 		);
 		document.documentElement.style.setProperty(
 			"--line-color-lighter",
-			color.lighter
+			color.lighter,
 		);
 	}
 
@@ -225,7 +226,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	function setDirectionButton() {
 		directionButtons.forEach((button) =>
-			button.classList.remove("selected")
+			button.classList.remove("selected"),
 		);
 		directionButtons.forEach((button) => {
 			if (parseInt(button.dataset.direction) === direction)
