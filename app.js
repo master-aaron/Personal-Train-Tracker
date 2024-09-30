@@ -4,14 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
 	const directionButtons = document.querySelectorAll(".direction-button");
 	const lineSelect = document.getElementById("lineSelect");
 	const busSlider = document.getElementById("busSlider");
+
 	let stops = [];
-	const apiKey = "2a9bf598d2584bda8a3aec32f176044e";
 	let direction = parseInt(getCookie("direction") || "1"); // Default direction is Inbound
 	let selectedLine = getCookie("selectedLine") || "Green-E"; // Get from cookie or default to "Green-E"
 	let selectedBus = getCookie("selectedBus") || "39";
 	let busChecked = stringToBoolean(getCookie("busChecked"));
 	let selected = busChecked ? selectedBus : selectedLine;
 	busSlider.checked = busChecked;
+
+	const SERVER_BASE_URL = "http://localhost:3000";
+	// const SERVER_BASE_URL = 'http://172.20.0.25:3000';
 
 	function stringToBoolean(str) {
 		return str.toLowerCase() === "true";
@@ -56,9 +59,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	async function fetchSubwayLines() {
 		busChecked = stringToBoolean(getCookie("busChecked"));
 
-		const url = `https://api-v3.mbta.com/routes?filter[type]=${
+		const url = `${SERVER_BASE_URL}/routes?filter[type]=${
 			busChecked ? "3" : "0,1"
-		}&api_key=${apiKey}`;
+		}`;
 
 		selectedLine = getCookie("selectedLine") || "Green-E";
 		selectedBus = getCookie("selectedBus") || "39";
@@ -90,7 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStops() {
-		const url = `https://api-v3.mbta.com/stops?filter[route]=${selected}&filter[direction_id]=1&api_key=${apiKey}`;
+		const url = `${SERVER_BASE_URL}/stops?filter[route]=${selected}&filter[direction_id]=1`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -107,7 +110,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStopNameFromId(stopId) {
-		const url = `https://api-v3.mbta.com/stops/${stopId}?api_key=${apiKey}`;
+		const url = `${SERVER_BASE_URL}/stops/${stopId}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
@@ -118,7 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchTrainLocations() {
-		const url = `https://api-v3.mbta.com/vehicles?filter[route]=${selected}&filter[direction_id]=${direction}&api_key=${apiKey}`;
+		const url = `${SERVER_BASE_URL}/vehicles?filter[route]=${selected}&filter[direction_id]=${direction}`;
 		try {
 			const response = await fetch(url);
 			const data = await response.json();
