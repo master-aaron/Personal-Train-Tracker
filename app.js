@@ -106,6 +106,30 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 
+	async function fetchStopsBus() {
+		const route_pattern_list_url = `https://api-v3.mbta.com/route_patterns?api_key=${apiKey}&sort=typicality&filter[direction_id]=${direction}&filter[route]=${selected}&fields[route_pattern]=`;
+
+		try {
+			const route_pattern_response = await fetch(route_pattern_list_url);
+			const route_pattern_data = await route_pattern_response.json();
+			const route_pattern = route_pattern_data["data"][0]["id"];
+			console.log(route_pattern);
+
+			const stop_list_url = `https://www.mbta.com/schedules/line_api?id=${selected}&direction_id=${direction}&route_pattern=${route_pattern}`;
+
+			const stop_list_response = await fetch(stop_list_url);
+			const stop_list = stop_list_response["data"]["route_stop_lists"][0];
+			const stop_names_list = stop_list.map((stop) => ({
+				name: stop.name,
+			}));
+			stops = stop_names_list;
+		} catch (error) {
+			message.textContent = "Error fetching bus stops data.";
+			message.style.color = "red";
+			console.error("Error fetching bus stops data:", error);
+		}
+	}
+
 	async function fetchStopNameFromId(stopId) {
 		const url = `https://api-v3.mbta.com/stops/${stopId}?api_key=${apiKey}`;
 		try {
@@ -186,9 +210,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		event.target.classList.add("selected");
 		direction = parseInt(event.target.dataset.direction);
 		setCookie("direction", direction, 7);
-		fetchStops().then(() => {
-			fetchTrainLocations();
-		});
+
+		if (busChecked) {
+			fetchStopsBus().then(() => {
+				fetchTrainLocations();
+			});
+		} else {
+			fetchStops().then(() => {
+				fetchTrainLocations();
+			});
+		}
 	}
 
 	function handleLineSelectChange() {
@@ -200,9 +231,16 @@ document.addEventListener("DOMContentLoaded", function () {
 			: setCookie("selectedLine", selected, 7);
 
 		updateLineColors(selected);
-		fetchStops().then(() => {
-			fetchTrainLocations();
-		});
+
+		if (busChecked) {
+			fetchStopsBus().then(() => {
+				fetchTrainLocations();
+			});
+		} else {
+			fetchStops().then(() => {
+				fetchTrainLocations();
+			});
+		}
 	}
 
 	function updateLineColors(line) {
@@ -245,11 +283,21 @@ document.addEventListener("DOMContentLoaded", function () {
 	lineSelect.addEventListener("change", handleLineSelectChange);
 	busSlider.addEventListener("change", handleBusSliderChange);
 
-	fetchSubwayLines().then(() => {
-		fetchStops().then(() => {
-			setDirectionButton();
-			fetchTrainLocations();
-			setInterval(fetchTrainLocations, 1000);
+	if (busChecked) {
+		fetchSubwayLines().then(() => {
+			fetchStopsBus().then(() => {
+				setDirectionButton();
+				fetchTrainLocations();
+				setInterval(fetchTrainLocations, 1000);
+			});
 		});
-	});
+	} else {
+		fetchSubwayLines().then(() => {
+			fetchStops().then(() => {
+				setDirectionButton();
+				fetchTrainLocations();
+				setInterval(fetchTrainLocations, 1000);
+			});
+		});
+	}
 });
