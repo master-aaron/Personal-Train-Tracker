@@ -110,22 +110,13 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStopsBus() {
-		const route_pattern_list_url = `https://api-v3.mbta.com/route_patterns?api_key=${apiKey}&sort=typicality&filter[direction_id]=${direction}&filter[route]=${selected}&fields[route_pattern]=`;
-
+		const url = `${SERVER_BASE_URL}/stops/bus?direction_id=${direction}&route=${selected}`;
 		try {
-			const route_pattern_response = await fetch(route_pattern_list_url);
-			const route_pattern_data = await route_pattern_response.json();
-			const route_pattern = route_pattern_data["data"][0]["id"];
-			console.log(route_pattern);
-
-			const stop_list_url = `https://www.mbta.com/schedules/line_api?id=${selected}&direction_id=${direction}&route_pattern=${route_pattern}`;
-
-			const stop_list_response = await fetch(stop_list_url);
-			const stop_list = stop_list_response["data"]["route_stop_lists"][0];
-			const stop_names_list = stop_list.map((stop) => ({
-				name: stop.name,
-			}));
+			const response = await fetch(url);
+			const stop_names_list = await response.json();
 			stops = stop_names_list;
+			debugger;
+			updateStopsList([]);
 		} catch (error) {
 			message.textContent = "Error fetching bus stops data.";
 			message.style.color = "red";
