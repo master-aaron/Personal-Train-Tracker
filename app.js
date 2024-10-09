@@ -13,7 +13,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	let selected = busChecked ? selectedBus : selectedLine;
 	busSlider.checked = busChecked;
 
-	const SERVER_BASE_URL = "http://localhost:3000";
+	const SERVER_BASE_URL =
+		"https://simple-train-tracker-app-server-production.up.railway.app";
+
+	// const SERVER_BASE_URL = "http://localhost:3000";
 	// const SERVER_BASE_URL = 'http://172.20.0.25:3000';
 
 	function stringToBoolean(str) {
@@ -110,12 +113,12 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	async function fetchStopsBus() {
+		stopsList.innerHTML = "";
 		const url = `${SERVER_BASE_URL}/stops/bus?direction_id=${direction}&route=${selected}`;
 		try {
 			const response = await fetch(url);
 			const stop_names_list = await response.json();
 			stops = stop_names_list;
-			debugger;
 			updateStopsList([]);
 		} catch (error) {
 			message.textContent = "Error fetching bus stops data.";
@@ -135,6 +138,15 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 	}
 
+	async function getStopNameFromId(stopId) {
+		if (busChecked) {
+			return stops.find((stop) => stop.id === stopId).name;
+		}
+
+		const trainStopName = await fetchStopNameFromId(stopId);
+		return trainStopName;
+	}
+
 	async function fetchTrainLocations() {
 		const url = `${SERVER_BASE_URL}/vehicles?filter[route]=${selected}&filter[direction_id]=${direction}`;
 		try {
@@ -145,7 +157,7 @@ document.addEventListener("DOMContentLoaded", function () {
 				const vehicleLocations = await Promise.all(
 					vehicles.map(async (vehicle) => {
 						const stopId = vehicle.relationships.stop.data.id;
-						const stopName = await fetchStopNameFromId(stopId);
+						const stopName = await getStopNameFromId(stopId);
 						const status = vehicle.attributes.current_status;
 						return { stopId, stopName, status };
 					}),
@@ -198,6 +210,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function handleDirectionButtonClick(event) {
+		if (busChecked) stopsList.innerHTML = "";
+
 		directionButtons.forEach((button) =>
 			button.classList.remove("selected"),
 		);
@@ -217,8 +231,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function handleLineSelectChange() {
-		selected = lineSelect.value;
 		stopsList.innerHTML = "";
+		selected = lineSelect.value;
 
 		busChecked
 			? setCookie("selectedBus", selected, 7)
@@ -267,6 +281,8 @@ document.addEventListener("DOMContentLoaded", function () {
 	}
 
 	function handleBusSliderChange(event) {
+		stopsList.innerHTML = "";
+
 		setCookie("busChecked", event.target.checked, 7);
 		stopsList.innerHTML = "";
 		fetchSubwayLines().then(() => {
