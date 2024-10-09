@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			const data = await response.json();
 			const allLines = data.data;
 			const lines = allLines.filter((line) => line.id != "Mattapan");
-			lines.sort((a, b) => a.id - b.id);
+			lines.sort((a, b) => parseInt(a.id, 10) - parseInt(b.id, 10));
 
 			lineSelect.innerHTML = "";
 
