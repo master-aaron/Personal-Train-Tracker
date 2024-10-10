@@ -1,161 +1,168 @@
 :root {
-    --line-color: #008000; /* Default to Green Line E */
-    --line-color-lighter: #CCFFCC; /* Default to lighter Green Line E */
+	--line-color: #008000; /* Default to Green Line E */
+	--line-color-lighter: #ccffcc; /* Default to lighter Green Line E */
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
-    margin: 20px 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+	font-family: Arial, sans-serif;
+	background-color: #f4f4f4;
+	margin: 20px 0;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
 }
 
 .container {
-    text-align: center;
-    background: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    width: 90%;
-    max-width: 400px;
-    margin: 20px 0;
+	text-align: center;
+	background: white;
+	padding: 20px;
+	border-radius: 8px;
+	box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+	width: 90%;
+	max-width: 400px;
+	margin: 20px 0;
 }
 
 h1 {
-    color: #333;
-    margin-top: 0;
+	color: #333;
+	margin-top: 0;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
-    margin-top: 0;
-    transition: 1s ease;
+	list-style-type: none;
+	padding: 0;
+	margin-top: 0;
+	transition: 1s ease;
 }
 
 li {
-    padding: 5px;
-    font-size: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.6s ease, color 0.6s ease;
+	padding: 5px;
+	font-size: 16px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	transition:
+		background-color 0.6s ease,
+		color 0.6s ease;
 }
 
 .current-location {
-    color: var(--line-color);
-    font-weight: bold;
-    background-color: var(--line-color-lighter);
+	color: var(--line-color);
+	font-weight: bold;
+	background-color: var(--line-color-lighter);
 }
 
 .status-span {
-    margin-left: 10px;
-    font-weight: normal;
-    color: inherit;
-    transition: opacity 0.6s ease;
+	margin-left: 10px;
+	font-weight: normal;
+	color: inherit;
+	transition: opacity 0.6s ease;
 }
 
 /* Button styles */
 .button-container {
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: space-around;
+	margin-bottom: 20px;
+	display: flex;
+	justify-content: space-around;
 }
 
 .button-container button {
-    background-color: var(--line-color);
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition-duration: 0.4s;
-    box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+	background-color: var(--line-color);
+	border: none;
+	color: white;
+	padding: 10px 20px;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
+	font-size: 16px;
+	cursor: pointer;
+	border-radius: 8px;
+	transition-duration: 0.4s;
+	box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
 }
 
 .button-container button:hover {
-    background-color: var(--line-color);
+	background-color: var(--line-color);
 }
 
 .direction-button:not(.selected) {
-    background-color: #ddd;
+	background-color: #ddd;
 }
 
 .line-container {
-    margin-bottom: 20px;
-    display: inline-block;
+	margin-bottom: 20px;
+	display: inline-block;
 }
 
 .switch-container {
-    display: flex;
-    align-items: center;
-    margin-top: 12px;
+	display: flex;
+	align-items: center;
+	margin-top: 12px;
 }
 
 .label {
-    margin: 0 10px;
-    font-size: 16px;
+	margin: 0 10px;
+	font-size: 16px;
 }
 
 .switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 34px;
+	position: relative;
+	display: inline-block;
+	width: 60px;
+	height: 34px;
 }
 
 /* Hide default HTML checkbox */
 .switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
 /* The slider */
 .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: var(--line-color);
-    transition: .4s;
-    border-radius: 34px;
+	position: absolute;
+	cursor: pointer;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: var(--line-color);
+	transition: 0.4s;
+	border-radius: 34px;
 }
 
 /* The slider before */
 .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
+	position: absolute;
+	content: "";
+	height: 26px;
+	width: 26px;
+	left: 4px;
+	bottom: 4px;
+	background-color: white;
+	transition: 0.4s;
+	border-radius: 50%;
 }
 
 /* Checked state */
 input:checked + .slider {
-    background-color: var(--line-color);
+	background-color: var(--line-color);
 }
 
 /* Move the slider to the right when checked */
 input:checked + .slider:before {
-    transform: translateX(26px);
+	transform: translateX(26px);
 }
 
 #lineSelect {
-    padding: 10px;
-    font-size: 16px;
+	padding: 10px;
+	font-size: 16px;
+}
+
+.direction-label {
+	padding: 10px;
+	font-weight: bold;
 }
